@@ -2,172 +2,303 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>からだのセルフチェック｜ベイビーフロー</title>
 <style>
 :root{--bg:#f6f8fa;--card:#fff;--tx:#1f2933;--sub:#5b6b78;--ac:#2f6f9f;--acbg:#e8f1f8;--wn:#b3402f;--wnbg:#fdecea;--am:#8a5a00;--ambg:#fff4dc;--bd:#d9e1e8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14191e;--card:#1d252c;--tx:#e6ebef;--sub:#9aa8b4;--ac:#6fb0dc;--acbg:#1e3342;--wn:#f08a7a;--wnbg:#3a2220;--am:#e6b95a;--ambg:#3a3020;--bd:#33414c}}
+@media (prefers-color-scheme:dark){:root{--bg:#14191e;--card:#1d252c;--tx:#e6ebef;--sub:#9aa8b4;--ac:#6fb0dc;--acbg:#1e3342;--wn:#f08a7a;--wnbg:#3a2220;--am:#e6b95a;--ambg:#3a3020;--bd:#33414c}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.7 system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif}
-main{max-width:640px;margin:0 auto;padding:16px}
-h1{font-size:20px;margin:4px 0 2px}h2{font-size:17px;margin:0 0 8px}
+main{max-width:640px;margin:0 auto;padding:16px;padding-bottom:60px}
+h1{font-size:20px;margin:4px 0 2px}
+h2{font-size:17px;margin:0 0 8px}
 .sub{color:var(--sub);font-size:13px;margin:0 0 14px}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin:12px 0}
-.prog{font-size:12px;color:var(--sub);margin-bottom:6px}
-label.it{display:flex;gap:10px;align-items:flex-start;padding:10px 4px;border-bottom:1px solid var(--bd);cursor:pointer}
+.prog{font-size:12px;color:var(--sub);margin-bottom:6px;font-weight:bold}
+label.it{display:flex;gap:12px;align-items:flex-start;padding:12px 4px;border-bottom:1px solid var(--bd);cursor:pointer}
 label.it:last-child{border-bottom:0}
-input[type=checkbox],input[type=radio]{width:22px;height:22px;flex:none;margin-top:2px;accent-color:var(--ac)}
-button{font:inherit;border:1px solid var(--ac);background:var(--ac);color:#fff;border-radius:10px;padding:11px 16px;margin:6px 6px 0 0;cursor:pointer}
+input[type=checkbox]{width:24px;height:24px;flex:none;margin-top:2px;accent-color:var(--ac)}
+button{font:inherit;border:1px solid var(--ac);background:var(--ac);color:#fff;border-radius:10px;padding:12px 18px;margin:8px 8px 0 0;cursor:pointer;font-weight:bold}
 button.g{background:transparent;color:var(--ac)}
-button.a{display:block;width:100%;text-align:left;background:var(--card);color:var(--tx);border:1px solid var(--bd);margin:8px 0;padding:12px}
-.box{border-radius:10px;padding:10px 12px;margin:10px 0;font-size:14px}
+.box{border-radius:10px;padding:12px;margin:12px 0;font-size:14px}
 .wn{background:var(--wnbg);color:var(--wn)}.am{background:var(--ambg);color:var(--am)}.ac{background:var(--acbg)}
-.fl{border-left:4px solid var(--ac);padding:4px 0 4px 10px;margin:10px 0}
-.fl b{color:var(--ac)}.fl small{display:block;color:var(--sub)}
-footer{font-size:12px;color:var(--sub);margin:18px 0 8px}
 a{color:var(--ac)}
+.fl{border-left:4px solid var(--ac);padding:4px 0 4px 10px;margin:12px 0}
+.fl b{color:var(--ac);font-size:16px}.fl small{display:block;color:var(--sub)}
+ul{margin:6px 0 10px;padding-left:18px}
+footer{font-size:12px;color:var(--sub);margin:24px 0 12px;border-top:1px solid var(--bd);padding-top:12px}
+details{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;margin-top:10px}
+details summary{font-size:14px;font-weight:bold;cursor:pointer;color:var(--ac)}
+details[open] summary{margin-bottom:8px}
+.flow-guide{font-size:14px;line-height:1.6;color:var(--tx)}
+.note-btn{display:inline-block;margin-top:10px;padding:8px 14px;background:var(--card);border:1px solid var(--bd);border-radius:8px;color:var(--tx);text-decoration:none;font-size:13px;font-weight:bold}
+.note-btn:hover{border-color:var(--ac);color:var(--ac)}
 </style>
 </head>
 <body>
 <main>
 <h1>からだのセルフチェック</h1>
 <p class="sub">ベイビーフロー｜原因の「診断」ではなく、動き方の傾向から、試すフローの候補を探すための目安です。通院や運動教室に通えない間・合間のホームケアとしてご活用ください（通院の代わりではありません）。</p>
+
 <div id="v"></div>
+
 <footer>
 ※これは医学的に検証された判定ツールではなく、著者の解釈にもとづく目安です。診断・治療の代わりにはなりません。症状が続く、または強いときは、医療機関へご相談ください。
 </footer>
 </main>
+
 <script>
-const URG=[
-  "両脚のしびれや力の入りにくさが、急に出た",
-  "尿や便が出にくい、または漏れる",
-  "股のあたりの感覚が鈍い",
-  "突然の激しい頭痛がある",
-  "突然の激しい首や背中の痛みがある",
-  "ろれつが回らない、顔や手足の麻痺、強いめまいがある",
-  "転倒や事故のあとに、強い痛みが出た",
-  "発熱を伴う、強い痛みや動かしにくさがある"
-];
+window.addEventListener('DOMContentLoaded', function() {
+  const NOTE_MAIN_URL = "https://note.com/calm_plover523/n/nd14e9198d188";
 
-const QS=[
-  {
-    q:"ふだんの呼吸やお腹の感覚で、近いものは？",
-    o:[
-      {t:"息を吸うと肩や胸ばかりが持ち上がり、お腹が動きにくい",f:[1,2]},
-      {t:"息を吐ききれず、常に胸やお腹が突っ張っている",f:[1]},
-      {t:"お腹まわりは自然に広がり、特に問題を感じない",f:[]}
-    ]
-  },
-  {
-    q:"あお向けで寝たときの腰や首の感覚は？",
-    o:[
-      {t:"腰が浮いて落ち着かない／足を伸ばすと腰が重い",f:[1,2]},
-      {t:"顎が上がってしまい、首の後ろが突っ張る",f:[1,3]},
-      {t:"特に違和感なく、床に平らに預けられている",f:[]}
-    ]
-  },
-  {
-    q:"座っているときや立っているときの姿勢は？",
-    o:[
-      {t:"背中が丸まりやすく、お腹に力が入らない（丸まりがち）",f:[2,3]},
-      {t:"無理に胸を張って背中を反らせている（反り腰になりがち）",f:[1,4]},
-      {t:"姿勢を保つのにそれほど力みは感じない",f:[]}
-    ]
-  },
-  {
-    q:"日常の動作で、いちばん負担を感じやすい部位は？",
-    o:[
-      {t:"首・肩のこりや、頭の重さ",f:[1,3]},
-      {t:"腰・股関節の重だるさや詰まり感",f:[2,4]},
-      {t:"特に偏った疲れや張りは感じていない",f:[]}
-    ]
-  }
-];
+  const FL = {
+    1:{n:"仰向けでバタバタ",d:"呼吸と体幹の土台。痛みが強い日は無理せず、呼吸だけでも",c:"お腹まわりの安定が使いにくく、首・肩・腰が頑張っている",g:"息の浅さ、腰の反り、全身の力み",e:"息を深くし、首・肩・腰の力みを抜く",how:"仰向けになり、お腹の奥でゆったり息をする感覚を思い出します。楽に感じるときだけ、手足を軽く浮かせてパタパタ揺らします。腰がつらい日や反りやすい人は、足を床につけたまま呼吸だけで十分です。"},
+    2:{n:"腹ばいで頭を持ち上げる",d:"首・肩・頭の位置を整える",c:"頭が前に出て、首の後ろの筋肉が頭を支え続けている",g:"頭の位置、首の後ろの重さ、肩のすくみ",e:"首の後ろの負担を減らし、頭を支えやすくする",how:"うつ伏せで肘をつき、肩をすくめずに、首を長く保ったまま頭を少し持ち上げます。腰が反りやすい人は、目線を床の少し前に置き、胸を軽く浮かせる程度にとどめてください。腰に違和感が出たら中止します。"},
+    3:{n:"腹ばいで手を伸ばす",d:"胸のねじれと肩甲骨の動き",c:"胸の背骨が動きにくく、首や肩で代わりに動かしている",g:"胸のねじれ、肩甲骨の滑り、巻き肩",e:"首や肩に頼らず、振り向きや腕の上げ下げをしやすくする",how:"うつ伏せで片肘で支えながら、もう片方の手を前〜斜め上へ軽く伸ばし、胸のしなやかなひねりを感じます。"},
+    4:{n:"指先からの寝返り",d:"腰だけをひねらない連動",c:"腰だけをひねって、寝返りや起き上がりをしている",g:"体をひとつにつなげて動かす感覚",e:"朝の動き出しの重さを和らげる",how:"仰向けから手先を伸ばし、目線と手が先行して全身が自然にごろんと転がる連動を作ります。"},
+    5:{n:"ずり這い",d:"股関節の開きと骨盤の動き",c:"股関節が動きにくく、骨盤や腰で代わりに動かしている",g:"股関節の開き、骨盤のしなやかさ",e:"股関節を使う感覚を出し、座り方や歩きを楽にする",how:"うつ伏せのまま、膝を横から引き上げるようにして股関節を大きくしなやかに使います。"},
+    6:{n:"ぷりケツ（ロッキング）",d:"股関節で曲げる練習",c:"股関節で曲げられず、腰を丸めて動作している",g:"前屈みや物を拾うときの腰の使い方",e:"腰に頼らず、股関節から曲げる感覚をつかむ",how:"四つ這いになり、背骨をまっすぐ保ったまま、お尻を後ろ（かかと方向）へ引いて股関節を折りたたみます。膝や手首に痛みがあるときは行わないでください。"},
+    7:{n:"ハイハイ",d:"対角の連動",c:"手足と体幹の連動がぎこちなく、腰や肩に負担が集まっている",g:"手足と体幹のつながり、歩行時の安定",e:"手足と体幹をつなげて動かす感覚をつかむ",how:"右手と左膝、左手と右膝を交互に出し、体幹をぶらさずに滑らかに進みます。膝や手首に痛みがあるときは行わないでください。"},
+    8:{n:"お座り・お姉さん座り",d:"坐骨で座る感覚",c:"骨盤が後ろに倒れ、背もたれに頼って座っている",g:"座り姿勢の土台",e:"座っているときの首・腰の疲れにくさにつなげる",how:"お尻の左右の骨（坐骨）で床をまっすぐ捉え、骨盤の上に背骨が自然に乗る感覚を探します。"},
+    9:{n:"片膝立ち",d:"片脚で支える練習",c:"片脚で体を支える感覚が使いにくく、腰や前ももで頑張っている",g:"片脚で支える安定、膝の押し込み",e:"片脚で支える感覚を育て、立ち姿や歩きを安定させる",how:"片膝立ちになり、前足の足裏全体とお尻でしっかり重心を支えてぐらつきを抑えます。ぐらつく人は壁や椅子に手を添えてください。膝に痛みがあるときは行わないでください。"},
+    10:{n:"ヤンキー座り（深しゃがみ）",d:"最終段階。到達が目的ではありません",c:"足首・股関節の動きが制限され、腰や膝で補っている",g:"しゃがむ動きの可動域",e:"床の物を拾う・階段の動きを楽にする（個人差が大きい）",how:"かかとを床につけたまま、無理のない深さまでしゃがみ込みます。無理な踏ん張りは不要です。膝・足首に痛みがあるときは行わないでください。"}
+  };
 
-const FLOWS={
-  1:{name:"フロー1：呼吸とリセット",desc:"あお向けでの呼吸。肋骨とお腹の360度の広がりを取り戻し、全身の余計な力みを抜く基本です。"},
-  2:{name:"フロー2：脚の引き上げと安定",desc:"股関節を無理なく曲げ、体幹（お腹まわり）の支えを感じながら脚を動かす土台を作ります。"},
-  3:{name:"フロー3：うつ伏せ・肘つき（スフィンクス）",desc:"胸椎（背中の上部）を開き、首や肩に頼らずに頭を支える感覚を整えます。"},
-  4:{name:"フロー4：四つ這い・ロッキング",desc:"股関節と体幹を連動させ、背骨の自然なカーブを保ったまま重心を前後に移動させる練習です。"}
-};
+  const URG = [
+    "両脚のしびれや力の入りにくさが、急に出た",
+    "尿や便が出にくい、または漏れる",
+    "股のあたりの感覚が鈍い",
+    "突然の激しい頭痛がある",
+    "突然の激しい首や背中の痛みがある",
+    "ろれつが回らない、顔や手足の麻痺、強いめまいがある",
+    "転倒や事故のあとに、強い痛みが出た",
+    "発熱を伴う、強い痛みや動かしにくさがある"
+  ];
+  const CON = [
+    "腕や脚のしびれ・痛みが続いている",
+    "安静にしていても、夜も眠れないほど痛い",
+    "この種の動きで、症状が強くなったことがある",
+    "がんの既往があり、新しい痛みが出た／原因不明の体重減少がある"
+  ];
 
-const V=document.getElementById("v");
-let st={step:0,urg:[],answers:[]};
+  const AR = {
+    shoulder: ["肩こり", [["夕方になると、首の後ろから肩が重くなる",[2,1]],["画面を見るとき、あごが前に出る",[2,8]],["腕を前に伸ばすと、肩をすくめてしまう",[3]],["巻き肩や、腕の上げにくさを感じる",[3]],["椅子で骨盤が後ろに倒れ、背もたれに頼る",[8]]]],
+    neck: ["首の痛み・こり", [["振り向くとき、首だけで回している",[3,4]],["頭が前に出て、首の後ろが張る",[2]],["背中が固く、胸が動いていない感じがする",[3]],["腕を上げると、首に力が入る",[3]],["スマホやPCで、下を向く時間が長い",[2,8]]]],
+    back: ["腰痛・腰の重さ", [["前屈みや床の物を拾うとき、腰を丸めている",[6]],["立っていると腰が反り、息が浅い",[1,6]],["片足に体重をかける癖がある",[9]],["あぐらや正座で、股関節が開きにくい",[5]],["長時間座ると、腰がつらい",[8,1]],["深くしゃがめない",[6,10]],["朝、起き上がるときの動き出しが重い",[4,1]],["歩くと、腰や骨盤がぐらつく感じがする",[7,9]]]],
+    posture: ["姿勢が気になる", [["猫背で、頭が前に出ている",[2,8]],["巻き肩が気になる",[3,2]],["反り腰・お腹が前に出る",[1,6]],["左右どちらかに傾く、左右差が気になる",[5,8,9]],["背もたれがないと座っていられない",[8,1]],["立っているとき、膝を後ろに押し込んでいる",[9,6]]]]
+  };
 
-function render(){
-  let h="";
-  if(st.step==0){
-    h=`<div class="prog">ステップ 0／2 まず安全確認</div>
-    <div class="card">
-      <h2>当てはまるものはありますか？</h2>
-      ${URG.map((t,i)=>`<label class="it"><input type="checkbox" value="${i}" ${st.urg.includes(i)?"checked":""}><span>${t}</span></label>`).join("")}
-    </div>
-    <button onclick="go()">チェックを始める</button>`;
+  const PS = {
+    shoulder: {1:"息が浅く、胸や肩で呼吸を補っているため、肩まわりが休みにくい",2:"頭が前に出て、首の後ろから肩の筋肉が、頭を支え続けている",3:"胸の背骨が動きにくく、肩甲骨の動きが小さくなり、肩で代わりに動かしている",8:"座ると骨盤が後ろに倒れ、猫背と頭の前方位置が続き、肩への負担が増える"},
+    neck: {2:"頭が前に出て、首の後ろの筋肉に負担が集まっている",3:"胸の背骨が動きにくく、振り向きや見回しを、首だけで行っている",4:"寝返りや起き上がりで首に力が入り、朝の固さにつながっている",8:"座り姿勢で骨盤が倒れ、頭が前に出る状態が、長く続いている"},
+    back: {1:"腹部の安定が使いにくく、腰で体を支えて、反ったり力んだりしている",4:"寝返りや起き上がりで腰だけをひねり、朝のこわばりにつながっている",5:"股関節の動きが小さく、骨盤や腰で代わりに動かしている",6:"股関節で曲げられず、腰を丸めて前屈み動作をしている",7:"手足と体幹の連動が小さく、歩行時に骨盤がぐらつきやすい",8:"座位で骨盤が後ろに倒れ、腰が丸まった姿勢が長く続いている",9:"片脚で支える感覚が使いにくく、腰や前ももで頑張っている",10:"足首や股関節の動きが制限され、しゃがむ・立つ動作を、腰や膝が補っている"},
+    posture: {1:"息が浅く、胸が潰れて、反り腰や腹部の前方突出につながっている",2:"頭が前に出る姿勢が習慣化し、首の後ろで頭を支えている",3:"胸の背骨や肩甲骨の動きが小さく、巻き肩になりやすい",5:"股関節や骨盤の動きに左右差があり、体の傾きにつながっている",6:"股関節で動かせず、腰の反りや丸まりで補っている",8:"骨盤が後ろに倒れた座り方が続き、猫背や背もたれ依存につながっている",9:"片脚で支える癖や膝の押し込みが、立ち姿の左右差や傾きにつながっている"}
+  };
+
+  const V = document.getElementById("v");
+  const fresh = () => ({step: 0, urg: [], con: [], areas: [], chk: [], err: false});
+  let st = fresh();
+
+  function chk(n, arr, t, val) {
+    const isChecked = arr.includes(val) ? "checked" : "";
+    return `<label class="it"><input type="checkbox" data-g="${n}" value="${val}" ${isChecked}><span>${t}</span></label>`;
   }
-  if(st.step==9){
-    h=`<div class="box wn">
-      <b>セルフチェックや運動より先に、医療機関へ</b><br>
-      緊急性のある症状や、詳しい診察が必要な状態の可能性があります。無理に動かさず、受診を優先してください。
-    </div>
-    <button class="g" onclick="st={step:0,urg:[],answers:[]};render()">最初に戻る</button>`;
+
+  function conBox() {
+    return st.con.length ? '<div class="box am"><b>医療者への相談をおすすめします</b><br>「相談の目安」に当てはまる項目があります。動きを試す前に、医師や理学療法士などへ相談してください。</div>' : '';
   }
-  if(st.step>=1 && st.step<=QS.length){
-    const idx=st.step-1;
-    const q=QS[idx];
-    h=`<div class="prog">質問 ${st.step}／${QS.length}</div>
-    <div class="card">
-      <h2>${q.q}</h2>
-      ${q.o.map((opt,oi)=>`<button class="a" onclick="pick(${oi})">${opt.t}</button>`).join("")}
-    </div>
-    <button class="g" onclick="st.step--;render()">戻る</button>`;
-  }
-  if(st.step>QS.length){
-    const counts={1:0,2:0,3:0,4:0};
-    st.answers.forEach(a=>{
-      a.forEach(f=>{if(counts[f]!==undefined) counts[f]++});
+
+  function bind() {
+    V.querySelectorAll("input[type=checkbox]").forEach(e => {
+      e.onchange = () => {
+        const a = st[e.dataset.g];
+        const val = isNaN(e.value) ? e.value : +e.value;
+        if (e.checked) {
+          if (!a.includes(val)) a.push(val);
+        } else {
+          const idx = a.indexOf(val);
+          if (idx > -1) a.splice(idx, 1);
+        }
+      };
     });
-    let cand=Object.keys(counts).filter(k=>counts[k]>0).sort((a,b)=>counts[b]-counts[a]);
-    if(cand.length==0) cand=[1];
-
-    h=`<div class="prog">チェック結果</div>
-    <h2>おすすめのベイビーフロー候補</h2>
-    <div class="box ac">選んだ回答の傾向から、まず試してみるのがおすすめのフローです。</div>`;
-
-    cand.slice(0,2).forEach(fId=>{
-      const f=FLOWS[fId];
-      h+=`<div class="fl"><b>${f.name}</b><small>${f.desc}</small></div>`;
-    });
-
-    h+=`<div class="card">
-      <b>注意したいこと</b><br>
-      痛みを我慢して動かす必要はありません。違和感や強い張りを感じる場合は、無理をせず「フロー1の呼吸」から少しずつ試してください。
-    </div>
-    <div class="card" style="border-color:var(--ac);background:var(--acbg)">
-      <b>ベイビーフローの解説</b><br>
-      各フローの具体的な手順やポイントはnoteでご確認いただけます。<br>
-      <a href="https://note.com/calm_plover523/n/nd14e9198d188" target="_blank" rel="noopener" style="display:inline-block;margin-top:10px;font-weight:bold">やり方・全体像を見る（note）→</a>
-    </div>
-    <div class="card">
-      <small class="sub">相談先（病院・整骨院など）に迷っている方はこちら：</small><br>
-      <a href="index.html" style="display:inline-block;margin-top:6px;font-weight:bold">「どこに頼る？（相談先チャート）」を開く →</a>
-    </div>
-    <button onclick="st={step:0,urg:[],answers:[]};render()">最初からやり直す</button>`;
   }
 
-  V.innerHTML=h;
-  V.querySelectorAll("input[type=checkbox]").forEach(e=>e.onchange=()=>{
-    const v=+e.value;
-    e.checked?st.urg.push(v):st.urg.splice(st.urg.indexOf(v),1);
-  });
-}
+  function getTopFlows() {
+    const c = {};
+    st.areas.forEach(k => {
+      const a = AR[k][1];
+      st.chk.forEach(ci => {
+        if (ci.startsWith(k + "_")) {
+          const idx = +ci.split("_")[1];
+          if (a[idx]) {
+            a[idx][1].forEach((f, j) => c[f] = (c[f] || 0) + (j == 0 ? 2 : 1));
+          }
+        }
+      });
+    });
+    const en = Object.entries(c).sort((x, y) => y[1] - x[1] || x[0] - y[0]);
+    const m = en.length ? en[0][1] : 0;
+    return en.filter((x, i) => i == 0 || (i == 1 && x[1] * 2 >= m)).map(x => +x[0]).sort((x, y) => x - y);
+  }
 
-function go(){st.step=st.urg.length?9:1;render()}
-function pick(oi){
-  const idx=st.step-1;
-  st.answers[idx]=QS[idx].o[oi].f;
-  st.step++;
+  /* そのフローに実際につながったチェック項目の部位だけの文を返す */
+  function getProblemTexts(f) {
+    const list = [];
+    st.areas.forEach(k => {
+      const hit = st.chk.some(ci => {
+        if (!ci.startsWith(k + "_")) return false;
+        const it = AR[k][1][+ci.split("_")[1]];
+        return it && it[1].includes(f);
+      });
+      if (hit && PS[k][f] && !list.includes(PS[k][f])) list.push(PS[k][f]);
+    });
+    return list.length ? list : [FL[f].c];
+  }
+
+  const PH = [["① 目覚めさせる",[1,2,3]],["② 動き出す",[4,5,6,7]],["③ 立ち上がる",[8,9,10]]];
+  function flowList(top) {
+    return `<details>
+      <summary>▶ 10のフローの一覧を見る</summary>
+      <div class="flow-guide">
+        <p style="margin:6px 0">赤ちゃんが「寝る→転がる→這う→立つ」の順に、体を使えるようになる流れです。</p>
+        ${PH.map(p => `<p style="margin:10px 0 2px"><b>${p[0]}</b></p><ul>${p[1].map(i => `<li>${top.includes(i) ? "★ " : ""}<b>${i}. ${FL[i].n}</b><br><small class="sub">${FL[i].d}</small></li>`).join("")}</ul>`).join("")}
+        ${top.length ? '<small class="sub">★は、今回の重点の候補です。</small>' : ''}
+      </div>
+    </details>`;
+  }
+
+  function go(n) { st.step = n; st.err = false; render(); window.scrollTo(0, 0); }
+
+  function render() {
+    let h = "";
+
+    if (st.step == 0) {
+      h = `<div class="prog">ステップ 0／4 まず安全確認</div>
+      <div class="card">
+        <h2>当てはまるものはありますか？</h2>
+        <p class="sub">【緊急性の確認】</p>${URG.map((t, i) => chk("urg", st.urg, t, i)).join("")}
+        <p class="sub" style="margin-top:16px">【相談の目安】</p>${CON.map((t, i) => chk("con", st.con, t, i)).join("")}
+      </div>
+      <button id="btn-next">次へ</button>`;
+    }
+
+    if (st.step == 9) {
+      h = `<div class="box wn"><b>運動より先に、医療機関へ</b><br>緊急性のある症状の可能性があります。急に強くなる場合や、麻痺・ろれつの異常などがあるときは、救急要請も検討してください。このチャートは、ここで終了します。</div>
+      <button class="g" id="btn-reset">最初に戻る</button>`;
+    }
+
+    if (st.step == 1) {
+      h = `<div class="prog">ステップ 1／4</div>
+      <div class="card">
+        <h2>気になっている不調は？</h2>
+        <p class="sub">当てはまるものをすべて選んでください（複数選択可）。</p>
+        ${Object.entries(AR).map(([k, v]) => chk("areas", st.areas, v[0], k)).join("")}
+      </div>
+      ${st.err ? '<div class="box wn">気になる不調を1つ以上選んでください。</div>' : ''}
+      ${conBox()}
+      <button id="btn-step2">次へ（詳細チェック）</button>
+      <button class="g" id="btn-back0">戻る</button>`;
+    }
+
+    if (st.step == 2) {
+      h = `<div class="prog">ステップ 2／4 詳細チェック</div>`;
+      st.areas.forEach(k => {
+        const a = AR[k];
+        h += `<div class="card">
+          <h2>${a[0]} の傾向</h2>
+          <p class="sub">当てはまるものにチェック（直感で構いません）</p>
+          ${a[1].map((x, i) => chk("chk", st.chk, x[0], `${k}_${i}`)).join("")}
+        </div>`;
+      });
+      h += `<button id="btn-step3">問題点を確認する</button>
+      <button class="g" id="btn-back1">戻る</button>`;
+    }
+
+    if (st.step == 3) {
+      const top = getTopFlows();
+      const title = st.areas.map(k => AR[k][0]).join("・");
+
+      h = `<div class="prog">ステップ 3／4 からだの傾向・想定される問題点</div>
+      <h2>${title}｜動きのクセと傾向</h2>
+      ${conBox()}
+      <div class="box ac">以下はすべて、チェック内容からの<b>推測</b>です。診断ではなく、原因の断定でもありません。</div>` +
+      (top.length ?
+        top.map(f => `
+          <div class="card">
+            <b>想定されるポイント（影響している動き）</b>
+            <ul>${getProblemTexts(f).map(t => `<li>${t}</li>`).join("")}</ul>
+            <small class="sub">着目する動きの要素：${FL[f].g}</small>
+          </div>
+        `).join("") :
+        `<div class="box ac">特定の偏りは目立っていません。日々の姿勢維持や全身の連動から整えていくのが自然です。</div>`
+      ) +
+      `<button id="btn-step4">対応するフローを見る</button>
+      <button class="g" id="btn-back2">チェックをやり直す</button>`;
+    }
+
+    if (st.step == 4) {
+      const top = getTopFlows();
+      const title = st.areas.map(k => AR[k][0]).join("・");
+      h = `<div class="prog">ステップ 4／4 対応フローとねらい</div>
+      <h2>${title}｜おすすめのフロー</h2>
+      ${conBox()}
+      <div class="box am">
+        <b>ベイビーフローとは？</b><br>
+        赤ちゃんが「仰向け→寝返り→ハイハイ→立ち上がり」と順を追って体を支える力を育てるプロセスのことです。<br>
+        首や腰など複数がつらい場合でも、まずは土台（呼吸とお腹の安定）から順に試すことで、無理なく進められます。<br>
+        <a href="${NOTE_MAIN_URL}" class="note-btn" target="_blank" rel="noopener">ベイビーフローの全体像（note解説）を読む →</a>
+      </div>` +
+
+      (top.length ?
+        `<div class="box ac">選んだ不調・チェック内容の傾向から、まずは以下の動きを少し厚めに（意識して）試すのがおすすめです。<br>「ねらい」は目指す方向の目安で、効果の保証ではありません（個人差があります）。</div>` +
+        top.map(f => `
+          <div class="fl"><b>フロー${f}：${FL[f].n}</b><small>${FL[f].d}</small></div>
+          <div class="card">
+            <b>ねらい</b>
+            <ul><li>${FL[f].e}</li></ul>
+            <details>
+              <summary>▶ どんな動き？ やり方の目安を見る</summary>
+              <div class="flow-guide">
+                <p style="margin:6px 0">${FL[f].how}</p>
+              </div>
+            </details>
+          </div>
+        `).join("") :
+        `<div class="box ac">特定の偏りは見られませんでした。迷うときは、基本の土台となる「フロー1」から始めてみてください。</div>`
+      ) +
+      `<div class="card"><b>進め方の目安</b><br>
+      ・できれば、フロー1から順に通して行うのがおすすめです
+      ${flowList(top)}
+      ・そのなかで、上の動きを少し厚めに見てみてください<br>
+      ・つらい日は、フロー1の呼吸だけ（足は床につけたままで可）でも十分です。痛みが強い日は、無理せず休んでください<br>
+      ・痛みやハリが出る手前で止めましょう<br>
+      ・2週間ほど試して変化がない・悪化する場合は、無理せず医療者へ相談してください</div>
+      <div class="card"><small class="sub">病院や整体、運動教室など、どこに相談すればいいか迷うときは、<a href="https://drop-bab00770-609.goofy-popcorn.workers.dev/" target="_blank" rel="noopener">「どこに頼る？」</a>もどうぞ。</small></div>
+      <button id="btn-restart">最初からやり直す</button>
+      <button class="g" id="btn-back3">問題点の確認に戻る</button>`;
+    }
+
+    V.innerHTML = h;
+    bind();
+
+    const on = (id, fn) => { const b = document.getElementById(id); if (b) b.onclick = fn; };
+    on("btn-next", () => go(st.urg.length ? 9 : 1));
+    on("btn-reset", () => { st = fresh(); go(0); });
+    on("btn-restart", () => { st = fresh(); go(0); });
+    on("btn-step2", () => {
+      if (!st.areas.length) { st.err = true; render(); return; }
+      go(2);
+    });
+    on("btn-back0", () => go(0));
+    on("btn-step3", () => go(3));
+    on("btn-back1", () => go(1));
+    on("btn-step4", () => go(4));
+    on("btn-back2", () => go(2));
+    on("btn-back3", () => go(3));
+  }
+
   render();
-}
-render();
+});
 </script>
 </body>
 </html>
