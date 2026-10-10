@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>肩こりタイプ判定＆処方箋フロー｜ベイビーフロー</title>
+<style>
+:root{--bg:#f6f8fa;--card:#fff;--tx:#1f2933;--sub:#5b6b78;--ac:#2f6f9f;--acbg:#e8f1f8;--wn:#b3402f;--wnbg:#fdecea;--am:#8a5a00;--ambg:#fff4dc;--bd:#d9e1e8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{--bg:#14191e;--card:#1d252c;--tx:#e6ebef;--sub:#9aa8b4;--ac:#6fb0dc;--acbg:#1e3342;--wn:#f08a7a;--wnbg:#3a2220;--am:#e6b95a;--ambg:#3a3020;--bd:#33414c}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.7 system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif}
+main{max-width:640px;margin:0 auto;padding:16px;padding-bottom:60px}
+h1{font-size:20px;margin:4px 0 2px}
+h2{font-size:17px;margin:0 0 8px}
+.sub{color:var(--sub);font-size:13px;margin:0 0 14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin:12px 0}
+.prog{font-size:12px;color:var(--sub);margin-bottom:6px;font-weight:bold}
+label.it{display:flex;gap:12px;align-items:flex-start;padding:12px 4px;border-bottom:1px solid var(--bd);cursor:pointer}
+label.it:last-child{border-bottom:0}
+input[type=checkbox], input[type=radio]{width:22px;height:22px;flex:none;margin-top:2px;accent-color:var(--ac)}
+button{font:inherit;border:1px solid var(--ac);background:var(--ac);color:#fff;border-radius:10px;padding:12px 18px;margin:8px 8px 0 0;cursor:pointer;font-weight:bold}
+button.g{background:transparent;color:var(--ac)}
+button.a{display:block;width:100%;text-align:left;background:var(--card);color:var(--tx);border:1px solid var(--bd);margin:8px 0;padding:12px 14px;border-radius:10px}
+.box{border-radius:10px;padding:12px;margin:12px 0;font-size:14px}
+.wn{background:var(--wnbg);color:var(--wn)}.am{background:var(--ambg);color:var(--am)}.ac{background:var(--acbg)}
+a{color:var(--ac)}
+.fl{border-left:4px solid var(--ac);padding:4px 0 4px 10px;margin:12px 0}
+.fl b{color:var(--ac);font-size:16px}.fl small{display:block;color:var(--sub)}
+ul{margin:6px 0 10px;padding-left:18px}
+footer{font-size:12px;color:var(--sub);margin:24px 0 12px;border-top:1px solid var(--bd);padding-top:12px}
+details{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;margin-top:10px}
+details summary{font-size:14px;font-weight:bold;cursor:pointer;color:var(--ac)}
+details[open] summary{margin-bottom:8px}
+.flow-guide{font-size:14px;line-height:1.6;color:var(--tx)}
+.note-btn{display:inline-block;margin-top:10px;padding:8px 14px;background:var(--card);border:1px solid var(--bd);border-radius:8px;color:var(--tx);text-decoration:none;font-size:13px;font-weight:bold}
+.note-btn:hover{border-color:var(--ac);color:var(--ac)}
+.badge{display:inline-block;font-size:11px;font-weight:bold;padding:2px 8px;border-radius:4px;background:var(--acbg);color:var(--ac);margin-bottom:4px}
+</style>
+</head>
+<body>
+<main>
+<h1>肩こりタイプ判定＆処方箋</h1>
+<p class="sub">ベイビーフロー｜「肩を揉む」から卒業するための評価ツールです。日中の身体の使い方と動作テストから、肩に負担を集めている根本エラーをあぶり出し、必要なリセット動作を提示します。</p>
+
+<div id="v"></div>
+
+<footer>
+※本ツールは医学的診断を行うものではありません。重大な疾患の除外や強い痛み・しびれがある場合は、必ず医療機関（整形外科等）を受診してください。
+</footer>
+</main>
+
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+  const NOTE_MAIN_URL = "https://note.com/calm_plover523/n/nd14e9198d188";
+
+  // レッドフラッグ
+  const URG = [
+    "腕や手指にかけて、しびれや力が入りにくい感覚がある",
+    "首を動かすと、腕へ電気が走るような鋭い痛みが走る",
+    "安静にしていても、夜眠れないほど激しく痛む",
+    "胸の圧迫感、息苦しさ、発熱を伴っている"
+  ];
+
+  // 日中スタイル
+  const STYLES = {
+    standing: { t: "立ち仕事・手作業中心", desc: "厨房、調理、仕込み、現場作業、立ち接客、手先の作業が多い" },
+    desk: { t: "デスクワーク中心", desc: "長時間のPC操作、座り作業、スマホ・画面の凝視、運転が多い" },
+    hybrid: { t: "混合・どちらとも言える", desc: "立ち仕事も座り作業も両方あり、日によって異なる" }
+  };
+
+  // 10秒動作テスト
+  const TESTS = [
+    { id: "t_resp", t: "肩すくみテスト（呼吸の確認）", q: "息を深く吸い込んだとき、お腹よりも「肩先や鎖骨」が上へ持ち上がる感覚が強い", type: "resp" },
+    { id: "t_thoracic", t: "バンザイテスト（胸椎の確認）", q: "背筋を伸ばして腕を真上に上げたとき、腰を反らさないと腕が耳の横まで上がらない（途中で突っかかる）", type: "thoracic" },
+    { id: "t_arm", t: "肘曲げ外開きテスト（前腕の確認）", q: "肘を90度に曲げて脇につけ、手のひらを外側へ開いたとき、肩の前側や首筋に突っ張りや巻き込みを感じる", type: "arm" }
+  ];
+
+  // 日常の自覚症状
+  const HABITS = [
+    { id: "h_resp1", t: "集中すると息を止めていることが多く、ため息をよくつく", type: "resp" },
+    { id: "h_resp2", t: "立っているとお腹が抜けやすく、反り腰になりやすい（または下腹が出る）", type: "resp" },
+    { id: "h_thor1", t: "頭が前に突き出しやすく、背中の真ん中（肩甲骨の間）が板のように固い", type: "thoracic" },
+    { id: "h_thor2", t: "振り向くとき、背中を使えず首だけを回している感覚がある", type: "thoracic" },
+    { id: "h_arm1", t: "包丁、マウス、スマホなどを強く握りしめる癖がある", type: "arm" },
+    { id: "h_arm2", t: "手のひらや前腕（肘から手首）を押すと、肩と同じくらいカチカチに張っている", type: "arm" }
+  ];
+
+  // 処方箋データ
+  const PRESCRIPTIONS = {
+    resp: {
+      name: "呼吸・体幹抜け型",
+      sub: "横隔膜が働かず、首・肩ですすり呼吸をしている状態",
+      mech: "腹圧（IAP）が抜けて肋骨が浮き上がり、姿勢を支えるために本来は補助筋であるはずの僧帽筋上部や斜角筋が24時間働き続けて過労死状態になっています。肩を揉んでも、呼吸パターンが変わらなければ数分で元の硬さに戻ります。",
+      flows: {
+        standing: [
+          { n: "仰向け 肋骨下げブレス", d: "膝を立てて仰向けになり、息を吐き切って浮いた肋骨を床に沈める。吸うときは肩を上げずにお腹を全方向に膨らませる（5呼吸）。" },
+          { n: "立位 ヒンジ接地リセット", d: "軽く股関節を折りたたみ、足裏3点（親指付け根・小指付け根・かかと）に重心を落とす。お腹の圧を保ったまま腕を脱力してぶら下げる。" },
+          { n: "肩甲骨フリー脱力スイング", d: "下腹部の安定をキープしたまま、振り子のように腕を前後に小さく揺らし、肩の力みを完全に手放す。" }
+        ],
+        desk: [
+          { n: "坐骨リセット座り", d: "お尻の左右の骨（坐骨）の真上に体重を乗せ、骨盤を垂直に立てる。背もたれに寄りかからない初期位置を作る。" },
+          { n: "下位肋骨コンプレッション呼吸", d: "両手でみぞおち・あばら骨の左右を挟み、吐く息に合わせて自らの手で肋骨を内下方に誘導。吸うときは手を押し返すように息を入れる。" },
+          { n: "チンタック（後頭部牽引）", d: "あごを指1本分水平に引き、頭頂を天井へ向けて首の後ろを長く伸ばした状態で3呼吸する。" }
+        ],
+        hybrid: [
+          { n: "仰向け 360度腹圧呼吸", d: "仰向けで膝を立て、下腹部と腰が均等に床を押し広げるように深い呼吸を繰り返す。" },
+          { n: "坐骨・足裏アライメント確認", d: "座るときは坐骨、立つときは足裏3点に重心を落とし、お腹の芯で上半身を支える感覚を作る。" },
+          { n: "みぞおち脱力ブレス", d: "肩をすくめず、ため息を吐くように胸骨を緩めて肩甲帯の緊張を抜く。" }
+        ]
+      }
+    },
+    thoracic: {
+      name: "胸椎・肩甲骨ロック型",
+      sub: "背骨の真ん中が固まり、肩甲骨が肋骨に張り付いている状態",
+      mech: "デスクワークや前屈み作業により胸椎（背中の骨）の伸展・回旋がブロックされています。肩甲骨がスムーズに滑走できないため、腕を動かしたり頭を支えたりする負担がすべて首〜肩の付け根に集中しています。",
+      flows: {
+        standing: [
+          { n: "スフィンクス・ポジション", d: "うつ伏せで前腕を床につき、胸骨を斜め前へ引き出す。肘で軽く床を押し、首を長く保って5呼吸。" },
+          { n: "側臥位 オープンブック", d: "横向きで両膝を90度に曲げ、上側の腕を反対側へ大きく開く。骨盤は倒さず、みぞおちから上だけをしなやかに回旋させる（左右各5回）。" },
+          { n: "壁プッシュ（前鋸筋促通）", d: "壁に両手をつき、肘を伸ばしたまま肩甲骨同士を離すように背中を広げ、ゆっくり戻す。" }
+        ],
+        desk: [
+          { n: "背もたれ胸椎伸展", d: "椅子の背もたれに肩甲骨の下あたりを当て、頭の後ろで手を組んで息を吐きながら胸を天井へ開く。" },
+          { n: "座位ソラシックツイスト", d: "膝を揃えたまま、みぞおちを軸にして上半身を左右へゆっくり見回すように回旋させる。" },
+          { n: "平泳ぎアーム", d: "手のひらを外に向けながら肘を後ろポケットに滑り込ませるように引き、肩甲骨を下へ滑らせる。" }
+        ],
+        hybrid: [
+          { n: "四つ這い胸ひねり", d: "四つ這いから片手を後頭部に当て、肘を天井へ向けて胸を開く（左右各5回）。" },
+          { n: "スフィンクス支持", d: "床に肘をついて胸を引き上げ、肩甲骨を肋骨に密着させる感覚を取り戻す。" },
+          { n: "机プッシュリセット", d: "机に手を置いて下へ軽く押し、脇の下に力を入れて首筋を解放する。" }
+        ]
+      }
+    },
+    arm: {
+      name: "末端支持・前腕緊張型",
+      sub: "指先・手首の握り込みが筋膜を通じて肩を引っ張っている状態",
+      mech: "包丁、調理器具、工具、マウス、スマホなどを常時握り込むことで、前腕から手掌の筋膜ライン（ディープ・フロント・アームライン）が短縮しています。手先の緊張が鎖骨や小胸筋を下方・前方へ引っ張り込み、巻き肩と頑固な肩こりを作り出しています。",
+      flows: {
+        standing: [
+          { n: "母指球・手根管リリース", d: "親指の付け根のふくらみを、反対の親指でじっくり圧迫しながら指を開閉する（左右各30秒）。" },
+          { n: "作業台 前腕ストレッチ", d: "台に指先を手前に向けて手のひらをつけ、ゆっくり体重を後ろにかけて前腕内側を伸ばす（20秒）。" },
+          { n: "四つ這い掌圧ローディング", d: "四つ這いで手のひら全体（特に人差し指の付け根）で床を均等に捉え、手首から肘・肩へ力を真っ直ぐ通す。" }
+        ],
+        desk: [
+          { n: "前腕回外・回内リセット", d: "肘を90度曲げて脇につけ、手のひらを完全に上、完全に下へと交互に滑らかに捻る（往復10回）。" },
+          { n: "フィンガースプレッド", d: "丸まった指を限界まで大きくパーに開き、手首を少し反らせて5秒キープ（3セット）。" },
+          { n: "手首脱力シェイク", d: "脱力して手首をブラブラと細かく揺らし、前腕と指先の持続緊張をオフにする。" }
+        ],
+        hybrid: [
+          { n: "手のひら・母指球ほぐし", d: "手先の緊張を親指でしっかりほぐし、縮こまった手のひらを広げる。" },
+          { n: "前腕ストレッチ", d: "手首を反らせて前腕の筋肉を心地よく伸ばす。" },
+          { n: "脇締めアーム外旋", d: "脇を締めて手のひらを外側に開き、巻き込まれた肩関節を開放する。" }
+        ]
+      }
+    }
+  };
+
+  const V = document.getElementById("v");
+  let st = { step: 0, urg: [], style: "standing", tests: [], habits: [] };
+
+  function render() {
+    let h = "";
+
+    // ステップ0：安全確認
+    if (st.step == 0) {
+      h = `<div class="prog">ステップ 0／3　安全確認</div>
+      <div class="card">
+        <h2>確認してください</h2>
+        <p class="sub">以下の症状に当てはまるものはありますか？</p>
+        ${URG.map((t, i) => `<label class="it"><input type="checkbox" value="${i}" ${st.urg.includes(i) ? "checked" : ""}><span>${t}</span></label>`).join("")}
+      </div>
+      <button onclick="goUrgent()">次へ進む</button>`;
+    }
+
+    // レッドフラッグ停止画面
+    if (st.step == 9) {
+      h = `<div class="box wn">
+        <b>セルフケアの前に、医療機関（整形外科等）へ</b><br>
+        神経症状や重大な原因が隠れている可能性があります。無理に動かしたり揉んだりせず、まずは専門医の診察を受けてください。
+      </div>
+      <button class="g" onclick="st={step:0,urg:[],style:'standing',tests:[],habits:[]};render()">最初に戻る</button>`;
+    }
+
+    // ステップ1：日中スタイル選択
+    if (st.step == 1) {
+      h = `<div class="prog">ステップ 1／3　日中の過ごし方</div>
+      <div class="card">
+        <h2>あなたの主な日中スタイルは？</h2>
+        <p class="sub">一番近いものを1つ選んでください。</p>
+        ${Object.entries(STYLES).map(([k, v]) => `
+          <button class="a" onclick="st.style='${k}';st.step=2;render();scrollTo(0,0)">
+            <b style="color:var(--ac)">${v.t}</b><br>
+            <small class="sub">${v.desc}</small>
+          </button>
+        `).join("")}
+      </div>
+      <button class="g" onclick="st.step=0;render()">戻る</button>`;
+    }
+
+    // ステップ2：動作テスト＆自覚症状
+    if (st.step == 2) {
+      h = `<div class="prog">ステップ 2／3　動作テストとチェック</div>
+      <div class="card">
+        <span class="badge">その場で10秒テスト</span>
+        <h2>動作チェック</h2>
+        <p class="sub">実際に試してみて、当てはまるものにチェックしてください。</p>
+        ${TESTS.map(t => `<label class="it"><input type="checkbox" data-cat="tests" value="${t.id}" ${st.tests.includes(t.id) ? "checked" : ""}><div><b>${t.t}</b><br><small class="sub">${t.q}</small></div></label>`).join("")}
+      </div>
+      <div class="card">
+        <h2>日常の感覚チェック</h2>
+        <p class="sub">当てはまる傾向にチェック（直感で構いません）</p>
+        ${HABITS.map(hItem => `<label class="it"><input type="checkbox" data-cat="habits" value="${hItem.id}" ${st.habits.includes(hItem.id) ? "checked" : ""}><span>${hItem.t}</span></label>`).join("")}
+      </div>
+      <button onclick="st.step=3;render();scrollTo(0,0)">結果と処方箋を見る</button>
+      <button class="g" onclick="st.step=1;render()">戻る</button>`;
+    }
+
+    // ステップ3：判定結果と処方箋
+    if (st.step == 3) {
+      // スコア集計
+      const scores = { resp: 0, thoracic: 0, arm: 0 };
+      st.tests.forEach(id => {
+        const item = TESTS.find(x => x.id == id);
+        if (item) scores[item.type] += 2; // テスト動作は配点2
+      });
+      st.habits.forEach(id => {
+        const item = HABITS.find(x => x.id == id);
+        if (item) scores[item.type] += 1;
+      });
+
+      // 最多タイプの決定（同点の場合は胸椎＞呼吸＞腕の順）
+      let topType = "thoracic";
+      let maxScore = -1;
+      ["thoracic", "resp", "arm"].forEach(t => {
+        if (scores[t] > maxScore) {
+          maxScore = scores[t];
+          topType = t;
+        }
+      });
+
+      const res = PRESCRIPTIONS[topType];
+      const curStyle = STYLES[st.style];
+      const flowList = res.flows[st.style];
+
+      h = `<div class="prog">ステップ 3／3　判定結果</div>
+      <span class="badge">${curStyle.t} × あなたの傾向</span>
+      <h2>${res.name}</h2>
+      <p class="sub">${res.sub}</p>
+
+      <div class="card">
+        <b>なぜ肩が凝るのか？（メカニズム）</b>
+        <p class="flow-guide" style="margin-top:8px">${res.mech}</p>
+      </div>
+
+      <div class="box ac">
+        <b>今日から試す 3ステップ処方箋フロー</b><br>
+        肩を揉むのではなく、以下の順で運動連鎖のエラーを解除してください。
+      </div>
+
+      ${flowList.map((f, i) => `
+        <div class="fl">
+          <b>STEP ${i + 1}：${f.n}</b>
+          <small>${f.d}</small>
+        </div>
+      `).join("")}
+
+      <div class="card">
+        <b>進め方のコツ</b><br>
+        ・痛みを我慢して力む必要はありません。脱力と「骨の位置」を感じてください。<br>
+        ・仕事の合間や、一日の終わりに3分ほど通して行うのが効果的です。<br>
+        ・2週間ほど続けても全く変化がない場合は、無理せず専門家にご相談ください。
+      </div>
+
+      <div class="card" style="text-align:center">
+        <b>ベイビーフローの全体像を深く知る</b><br>
+        <small class="sub">赤ちゃんの初期発達から紐解く、身体リセットの全ステップ</small><br>
+        <a href="${NOTE_MAIN_URL}" class="note-btn" target="_blank" rel="noopener">note解説記事を読む →</a>
+      </div>
+
+      <button onclick="st={step:0,urg:[],style:'standing',tests:[],habits:[]};render();scrollTo(0,0)">最初からやり直す</button>
+      <button class="g" onclick="st.step=2;render()">チェックを選び直す</button>`;
+    }
+
+    V.innerHTML = h;
+    bindEvents();
+  }
+
+  function bindEvents() {
+    V.querySelectorAll("input[type=checkbox]").forEach(el => {
+      el.onchange = () => {
+        if (st.step == 0) {
+          const v = +el.value;
+          el.checked ? st.urg.push(v) : st.urg.splice(st.urg.indexOf(v), 1);
+        } else if (st.step == 2) {
+          const cat = el.dataset.cat;
+          const v = el.value;
+          if (el.checked) {
+            if (!st[cat].includes(v)) st[cat].push(v);
+          } else {
+            const idx = st[cat].indexOf(v);
+            if (idx > -1) st[cat].splice(idx, 1);
+          }
+        }
+      };
+    });
+  }
+
+  window.goUrgent = function() {
+    st.step = st.urg.length ? 9 : 1;
+    render();
+    window.scrollTo(0, 0);
+  };
+
+  render();
+});
+</script>
+</body>
+</html>
