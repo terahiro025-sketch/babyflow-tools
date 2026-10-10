@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>身体連動性・土台セルフチェック | Movement Pattern Assessment</title>
+  <style>
+    :root {
+      --color-bg: #f9faf8;
+      --color-card: #ffffff;
+      --color-primary: #3b6555;        /* Sage Deep Green */
+      --color-primary-light: #eef5f1;
+      --color-primary-hover: #2f5244;
+      --color-accent: #d97746;         /* Warm Terra Cotta */
+      --color-accent-light: #fdf5f0;
+      --color-text-main: #1f2937;
+      --color-text-sub: #4b5563;
+      --color-text-muted: #9ca3af;
+      --color-border: #e5e7eb;
+      --color-border-focus: #3b6555;
+      --shadow-soft: 0 4px 20px -2px rgba(31, 41, 55, 0.06);
+      --shadow-hover: 0 10px 25px -4px rgba(31, 41, 55, 0.1);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --transition-fast: 0.2s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text-main);
+      line-height: 1.65;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 40px;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .app-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--color-primary-light);
+      color: var(--color-primary);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      letter-spacing: 0.03em;
+      margin-bottom: 10px;
+    }
+
+    .app-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--color-text-main);
+      letter-spacing: -0.01em;
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+
+    .app-subtitle {
+      font-size: 14px;
+      color: var(--color-text-sub);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .progress-tracker {
+      margin-bottom: 20px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text-sub);
+      margin-bottom: 8px;
+    }
+
+    .progress-track {
+      background-color: var(--color-border);
+      height: 8px;
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      background: linear-gradient(90deg, #538370, var(--color-primary));
+      height: 100%;
+      width: 25%;
+      border-radius: 9999px;
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card {
+      background-color: var(--color-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--color-border);
+      padding: 28px 24px;
+      position: relative;
+    }
+
+    .step-view {
+      display: none;
+    }
+
+    .step-view.active {
+      display: block;
+      animation: fadeInStep 0.25s ease-out forwards;
+    }
+
+    @keyframes fadeInStep {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .question-category {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-primary);
+      margin-bottom: 6px;
+    }
+
+    .question-headline {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--color-text-main);
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .question-subtext {
+      font-size: 13px;
+      color: var(--color-text-sub);
+      margin-bottom: 24px;
+      background: #f4f6f4;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--color-primary);
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .option-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px;
+      background: #ffffff;
+      border: 2px solid var(--color-border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      transition: all var(--transition-fast);
+      user-select: none;
+    }
+
+    .option-card:hover {
+      border-color: #cbd5e1;
+      background-color: #fafbfc;
+      transform: translateY(-1px);
+    }
+
+    .option-card.selected {
+      border-color: var(--color-primary);
+      background-color: var(--color-primary-light);
+      box-shadow: 0 4px 12px rgba(59, 101, 85, 0.12);
+    }
+
+    .radio-circle {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid #cbd5e1;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+      background: #ffffff;
+      transition: all var(--transition-fast);
+    }
+
+    .option-card.selected .radio-circle {
+      border-color: var(--color-primary);
+      background-color: var(--color-primary);
+    }
+
+    .radio-circle::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ffffff;
+      opacity: 0;
+      transform: scale(0.6);
+      transition: all 0.18s ease;
+    }
+
+    .option-card.selected .radio-circle::after {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .option-content {
+      flex: 1;
+    }
+
+    .option-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--color-text-main);
+      margin-bottom: 3px;
+    }
+
+    .option-desc {
+      font-size: 12.5px;
+      color: var(--color-text-sub);
+      line-height: 1.5;
+    }
+
+    .error-hint {
+      display: none;
+      color: #dc2626;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: -12px;
+      margin-bottom: 16px;
+      padding: 6px 12px;
+      background: #fef2f2;
+      border-radius: var(--radius-sm);
+    }
+
+    .controls-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .btn {
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-prev {
+      background-color: #f1f5f9;
+      color: #475569;
+      flex: 0 0 32%;
+    }
+
+    .btn-prev:hover {
+      background-color: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .btn-next {
+      background-color: var(--color-primary);
+      color: #ffffff;
+      flex: 1;
+    }
+
+    .btn-next:hover {
+      background-color: var(--color-primary-hover);
+      box-shadow: 0 4px 12px rgba(47, 82, 68, 0.25);
+    }
+
+    .result-header {
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 20px;
+    }
+
+    .type-pill {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      letter-spacing: 0.04em;
+    }
+
+    .result-name {
+      font-size: 23px;
+      font-weight: 800;
+      color: var(--color-text-main);
+      line-height: 1.35;
+      margin-bottom: 8px;
+    }
+
+    .result-lead {
+      font-size: 14px;
+      color: var(--color-text-sub);
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--color-text-main);
+      margin: 22px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title svg {
+      color: var(--color-primary);
+    }
+
+    .mechanism-box {
+      background: #fafaf9;
+      border: 1px solid #e7e5e4;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      font-size: 13.5px;
+      color: #44403c;
+      line-height: 1.65;
+    }
+
+    .flow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .flow-card {
+      background: #ffffff;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    .flow-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .flow-number {
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .flow-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--color-text-main);
+    }
+
+    .flow-desc {
+      font-size: 13px;
+      color: var(--color-text-sub);
+      line-height: 1.55;
+      padding-left: 34px;
+    }
+
+    .point-box {
+      background: var(--color-accent-light);
+      border-left: 4px solid var(--color-accent);
+      padding: 14px 16px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-size: 13.5px;
+      color: #7c2d12;
+      margin-top: 14px;
+      line-height: 1.6;
+    }
+
+    @media print {
+      body { background: white; padding: 0; }
+      .app-container { max-width: 100%; }
+      .card { box-shadow: none; border: none; padding: 0; }
+      .btn, .progress-tracker, .controls-row { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div class="badge-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        発達運動学・DNSアプローチ
+      </div>
+      <h1 class="app-title">身体連動性・土台セルフチェック</h1>
+      <p class="app-subtitle">
+        首・肩・腰の不調は「その部位」の問題ではなく、呼吸・腹圧・骨盤との連動不全から。赤ちゃんの成長プロセス（Baby Flow）を元に、現在の身体パターンを評価します。
+      </p>
+    </header>
+
+    <div class="progress-tracker">
+      <div class="progress-meta">
+        <span id="labelStepCount">ステップ 1 / 4</span>
+        <span id="labelStepPct">25% 完了</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <main class="card">
+      <section class="step-view active" data-step="1">
+        <div class="question-category">STEP 1 / 日常の負担シチュエーション</div>
+        <h2 class="question-headline">普段、最も「固まり」や「疲れ」を感じるのはどんな時ですか？</h2>
+        <div class="question-subtext">日常で無意識に取っている姿勢やシチュエーションを選んでください。</div>
+
+        <div class="options-list" data-question="q1">
+          <button type="button" class="option-card" data-val="standing">
+            <span class="radio-circle"></span>
+            <div class="option-content">
+              <div class="option-title">長時間の立ち仕事・歩行・家事のあと</div>
+              <div class="option-desc">背中や腰が張ってきて反りたくなったり、肩が上にすくんで力が入る</div>
+            </div>
+          </button>
+          <button type="button" class="option-card" data-val="sitting">
+            <span class="option-content">
+              <div class="option-title">長時間のデスクワーク・座りっぱなし</div>
+              <div class="option-desc">気づくと背中が丸まり、お腹の力が抜けて骨盤が倒れた状態で固まる</div>
+            </div>
+            <span class="radio-circle"></span>
+          </button>
+          <button type="button" class="option-card" data-val="bending">
+            <span class="option-content">
+              <div class="option-title">中腰での作業・重い物を持ち上げるとき</div>
+              <div class="option-desc">股関節がうまく曲がらず、腰や膝、首などの末端ばかりに負担が集中する</div>
+            </div>
+            <span class="radio-circle"></span>
+          </button>
+          <button type="button" class="option-card" data-val="fatigue">
+            <span class="option-content">
+              <div class="option-title">特に決まっていないが、呼吸が浅く全身が緊張している</div>
+              <div class="option-desc">リラックスしようとしても肋骨や背中がこわばって深く息が吸えない</div>
+            </div>
+            <span class="radio-circle"></span>
+          </button>
+        </div>
+
+        <div class="error-hint" id="err-q1">選択肢を1つ選んでください</div>
+
+        <div class="controls-row">
+          <button type="button" class="btn btn-next" id="btnNext1">次へ進む</button>
+        </div>
+      </section>
+
+      <section class="step-view" data-step="2">
+        <div class="question-category">STEP 2 / 呼吸と腹圧（IAP）のチェック</div>
+        <h2 class="question-headline">鼻から深く息を吸い込んだ時、お腹や胸はどう動きますか？</h2>
+        <div class="question-subtext">両手を脇腹〜腰の後ろに当てて確認してみましょう。</div>
+
+        <div class="options-list" data-question="q2">
+          <button type="button" class="option-card" data-val="chest">
+            <span class="radio-circle"></span>
+            <div class="option-content">
+              <div class="option-title">肩や鎖骨、胸が一緒に上に持ち上がる（胸式・すくみ）</div>
+              <div class="option-desc">肋骨が上に開き、首筋や肩の筋肉で息を吸い上げている感覚がある</div>
+            </div>
+          </button>
+          <button type="button" class="option-card" data-val="belly_front">
+            <span class="radio-circle"></span>
+            <div class="option-content">
+              <div class="option-title">お腹の「前側だけ」がポコッと突き出る</div>
+              <div class="option-desc">横腹や腰の後ろには空気が入らず、前にだけ逃げて腹筋の圧が抜けている</div>
+            </div>
+          </button>
+          <button type="button" class="option-card" data-val="cylindrical">
+            <span class="radio-circle"></span>
+            <div class="option-content">
+              <div class="option-title">脇腹や腰の後ろまで360度均等に円柱状に膨らむ</div>
+              <div class="option-desc">肩や首に余計な力が入らず、骨盤底とお腹の奥に心地よい圧（IAP）を感じる</div>
+            </div>
+          </button>
+        </div>
+
+        <div class="error-hint" id="err-q2">選択肢を1つ選んでください</div>
+
+        <div class="controls-row">
+          <button type="button" class="btn btn-prev" id="btnPrev2">戻る</button>
+          <button type="button" class="btn btn-next" id="btnNext2">次へ進む</button>
+        </div>
+      </section>
+
+      <section class="step-view" data-step="3">
+        <div class="question-category">STEP 3 / ヒップヒンジと脊柱の連動テスト</div>
+        <h2 class="question-headline">立った状態でお辞儀（お尻を引く）をした時、どこで曲がりますか？</h2>
+        <div class="question-subtext">背骨のS字カーブを保ったまま股関節から折り込めるかのテストです。</div>
+
+        <div class="options-list" data-question="q3">
+          <button type="button" class="option-card" data-val="lumbar_round">
+            <span class="radio-circle"></span>
+            <div class="option-content">
+              <div class="option-title">股関節ではなく、腰や背中がすぐに丸まってしまう</div>
+              <div class="option-desc">お尻の筋肉に効かず、腰の筋肉が引っ張られて突っ張る感じがする</div>
+            </div>
+          </button>
+          <button type="button" class="option-card" data-val="knee_hyperextend">
+            <span class="radio-circle"></span>
+            <div class="option-content">
+              <div class="option-title">腰を無理に反らせてしまい、膝が前に出るか反り腰になる</div>
+              <div class="option-desc">肋骨が突き出て腰椎にギュッと詰まるようなストレスがかかる</div>
+            </div>
+          </button>
+          <button type="button" class="option-card" data-val="hip_hinge_good">
+            <span class="radio-circle"></span>
+            <div class="option-content">
+              <div class="option-title">股関節の付け根がしっかり引き込まれ、お尻と裏ももが伸びる</div>
+              <div class="option-desc">背骨はまっすぐ安定したまま、下半身と体幹が連結して支えられる</div>
+            </div>
+          </button>
+        </div>
+
+        <div class="error-hint" id="err-q3">選択肢を1つ選んでください</div>
+
+        <div class="controls-row">
+          <button type="button" class="btn btn-prev" id="btnPrev3">戻る</button>
+          <button type="button" class="btn btn-next" id="btnNext3">次へ進む</button>
+        </div>
+      </section>
+
+      <section class="step-view" data-step="4">
+        <div class="question-category">STEP 4 / 床での四つん這い支持テスト</div>
+        <h2 class="question-headline">床に四つん這いになった時、肩や腰の感覚はどうですか？</h2>
+        <div class="question-subtext">赤ちゃんがハイハイする前の重要な支持面（支持基底面）のチェックです。</div>
+
+        <div class="options-list" data-question="q4">
+          <button type="button" class="option-card" data-val="quad_shrug">
+            <span class="radio-circle"></span>
+            <div class="option-content">
+              <div class="option-title">手のひらで床を押すと首がすくみ、肩甲骨が寄ってしまう</div>
+              <div class="option-desc">手首や肩関節だけに体重が乗り、胸や前鋸筋で床を押し返せない</div>
+            </div>
+          </button>
+          <button type="button" class="option-card" data-val="quad_sag">
+            <span class="radio-circle"></span>
+            <div class="option-content">
+              <div class="option-title">お腹が床に向かってだらんと落ちて腰が反ってしまう</div>
+              <div class="option-desc">体幹のシリンダー（腹圧の筒）が抜けて、骨盤が前傾したまま固定される</div>
+            </div>
+          </button>
+          <button type="button" class="option-card" data-val="quad_solid">
+            <span class="radio-circle"></span>
+            <div class="option-content">
+              <div class="option-title">手のひら全体で床を押し返せ、背中が広く平らに保てる</div>
+              <div class="option-desc">首が長く保たれ、体幹全体がハンモックのように安定して浮いている</div>
+            </div>
+          </button>
+        </div>
+
+        <div class="error-hint" id="err-q4">選択肢を1つ選んでください</div>
+
+        <div class="controls-row">
+          <button type="button" class="btn btn-prev" id="btnPrev4">戻る</button>
+          <button type="button" class="btn btn-next" id="btnShowResult">評価結果を診断する</button>
+        </div>
+      </section>
+
+      <section class="step-view" data-step="5" id="viewResult">
+        <div class="result-header">
+          <span class="type-pill" id="resPill">TYPE ARCHETYPE</span>
+          <h2 class="result-name" id="resName">過伸展・力み固めタイプ</h2>
+          <p class="result-lead" id="resLead">体幹の腹圧が抜け、腰を反らせて肩甲骨と首で全身をロックしている状態です。</p>
+        </div>
+
+        <div class="section-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          なぜ肩や腰がつらくなるのか？（身体力学メカニズム）
+        </div>
+        <div class="mechanism-box" id="resMechanism">
+          解析テキストがここに表示されます。
+        </div>
+
+        <div class="section-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Baby Flow 処方シークエンス（床から始めるリセット）
+        </div>
+        <div class="flow-steps" id="resFlowSteps">
+          <!-- 動的挿入 -->
+        </div>
+
+        <div class="point-box" id="resPoint">
+          <!-- 動的挿入 -->
+        </div>
+
+        <div class="controls-row" style="margin-top: 28px;">
+          <button type="button" class="btn btn-next" id="btnRestart" style="width: 100%;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            もう一度診断する
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // 状態保持（State）
+      const appState = {
+        currentStep: 1,
+        totalSteps: 4,
+        responses: {
+          q1: null,
+          q2: null,
+          q3: null,
+          q4: null
+        }
+      };
+
+      // UIエレメント参照
+      const stepViews = document.querySelectorAll(".step-view");
+      const progressFill = document.getElementById("progressFill");
+      const labelStepCount = document.getElementById("labelStepCount");
+      const labelStepPct = document.getElementById("labelStepPct");
+
+      // 選択肢クリックイベントハンドラ
+      const optionLists = document.querySelectorAll(".options-list");
+      optionLists.forEach(function(list) {
+        const qKey = list.getAttribute("data-question");
+        const cards = list.querySelectorAll(".option-card");
+
+        cards.forEach(function(card) {
+          card.addEventListener("click", function() {
+            cards.forEach(function(c) { c.classList.remove("selected"); });
+            this.classList.add("selected");
+            appState.responses[qKey] = this.getAttribute("data-val");
+
+            // エラー表示を消す
+            const errEl = document.getElementById("err-" + qKey);
+            if (errEl) {
+              errEl.style.display = "none";
+            }
+          });
+        });
+      });
+
+      // ステップ遷移ロジック
+      function renderStep() {
+        stepViews.forEach(function(view) {
+          const stepNum = parseInt(view.getAttribute("data-step"), 10);
+          if (stepNum === appState.currentStep) {
+            view.classList.add("active");
+          } else {
+            view.classList.remove("active");
+          }
+        });
+
+        // 進捗バー制御
+        if (appState.currentStep <= appState.totalSteps) {
+          const pct = Math.round((appState.currentStep / appState.totalSteps) * 100);
+          if (progressFill) progressFill.style.width = pct + "%";
+          if (labelStepCount) labelStepCount.textContent = "ステップ " + appState.currentStep + " / " + appState.totalSteps;
+          if (labelStepPct) labelStepPct.textContent = pct + "% 完了";
+        } else {
+          // 診断結果画面
+          if (progressFill) progressFill.style.width = "100%";
+          if (labelStepCount) labelStepCount.textContent = "診断完了";
+          if (labelStepPct) labelStepPct.textContent = "100%";
+        }
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function advanceTo(qKey, nextNum) {
+        if (!appState.responses[qKey]) {
+          const errEl = document.getElementById("err-" + qKey);
+          if (errEl) errEl.style.display = "block";
+          return;
+        }
+        appState.currentStep = nextNum;
+        renderStep();
+      }
+
+      const btnNext1 = document.getElementById("btnNext1");
+      if (btnNext1) btnNext1.addEventListener("click", function() { advanceTo("q1", 2); });
+
+      const btnPrev2 = document.getElementById("btnPrev2");
+      if (btnPrev2) btnPrev2.addEventListener("click", function() { appState.currentStep = 1; renderStep(); });
+
+      const btnNext2 = document.getElementById("btnNext2");
+      if (btnNext2) btnNext2.addEventListener("click", function() { advanceTo("q2", 3); });
+
+      const btnPrev3 = document.getElementById("btnPrev3");
+      if (btnPrev3) btnPrev3.addEventListener("click", function() { appState.currentStep = 2; renderStep(); });
+
+      const btnNext3 = document.getElementById("btnNext3");
+      if (btnNext3) btnNext3.addEventListener("click", function() { advanceTo("q3", 4); });
+
+      const btnPrev4 = document.getElementById("btnPrev4");
+      if (btnPrev4) btnPrev4.addEventListener("click", function() { appState.currentStep = 3; renderStep(); });
+
+      const btnShowResult = document.getElementById("btnShowResult");
+      if (btnShowResult) {
+        btnShowResult.addEventListener("click", function() {
+          if (!appState.responses.q4) {
+            const errEl = document.getElementById("err-q4");
+            if (errEl) errEl.style.display = "block";
+            return;
+          }
+          evaluateArchetype();
+          appState.currentStep = 5;
+          renderStep();
+        });
+      }
+
+      const btnRestart = document.getElementById("btnRestart");
+      if (btnRestart) {
+        btnRestart.addEventListener("click", function() {
+          appState.responses = { q1: null, q2: null, q3: null, q4: null };
+          appState.currentStep = 1;
+          document.querySelectorAll(".option-card").forEach(function(c) { c.classList.remove("selected"); });
+          document.querySelectorAll(".error-hint").forEach(function(e) { e.style.display = "none"; });
+          renderStep();
+        });
+      }
+
+      function evaluateArchetype() {
+        const r = appState.responses;
+        
+        // 判定スコア
+        // Type A: 過伸展・力み型 (Extension / High Tone)
+        // Type B: 屈曲・腹圧抜け型 (Flexion / Collapse)
+        // Type C: 四肢主導・体幹連動消失型 (Extremity Dominant / Disconnected)
+        let scoreA = 0;
+        let scoreB = 0;
+        let scoreC = 0;
+
+        if (r.q1 === "standing") scoreA += 2;
+        if (r.q1 === "sitting") scoreB += 2;
+        if (r.q1 === "bending") scoreC += 2;
+        if (r.q1 === "fatigue") { scoreA += 1; scoreB += 1; }
+
+        if (r.q2 === "chest") scoreA += 2;
+        if (r.q2 === "belly_front") scoreB += 2;
+        if (r.q2 === "cylindrical") scoreC += 1; // バランス型
+
+        if (r.q3 === "knee_hyperextend") scoreA += 2;
+        if (r.q3 === "lumbar_round") scoreB += 2;
+        if (r.q3 === "hip_hinge_good") scoreC += 1;
+
+        if (r.q4 === "quad_shrug") scoreA += 1.5;
+        if (r.q4 === "quad_sag") { scoreA += 1; scoreB += 1.5; }
+        if (r.q4 === "quad_solid") scoreC += 1;
+
+        let resultData = null;
+
+        if (scoreA >= scoreB && scoreA >= scoreC) {
+          resultData = {
+            typePill: "TYPE A : EXTENSION & TENSION",
+            pillBg: "#fef3c7",
+            pillColor: "#92400e",
+            name: "過伸展・力み固めタイプ（肋骨開き・反り腰）",
+            lead: "体幹の腹圧が抜け、腰を反らせて肋骨を開き、首と肩甲骨をギュッと固めることでバランスを取っています。",
+            mechanism: "息を吸うときに肩や胸が上がり、肋骨の下部（リブフレア）が開いてしまうため、横隔膜と骨盤底筋群が平行に対面できなくなっています。その結果、本来お腹の圧力（IAP）で支えるべき上半身の重みを、首すじの筋肉や腰椎（背筋）の過緊張で無理やり支え続けており、慢性的な肩こりや腰の張りが引き起こされています。",
+            flowSteps: [
+              {
+                num: "1",
+                name: "息を吐ききり肋骨を収める呼吸リセット（仰向け）",
+                desc: "仰向けで膝を立て、ストローから細く長く息を吐き出すように「肋骨が胸の中にすっと収まる感覚」を掴みます。"
+              },
+              {
+                num: "2",
+                name: "スフィンクス・ポジション（前鋸筋の再活性）",
+                desc: "うつ伏せで肘をつき、首を長く保ちながら床を肘で押し込みます。肩甲骨を寄せるのではなく、胸郭を背中側に広く押し広げます。"
+              },
+              {
+                num: "3",
+                name: "四つん這いロッキング（骨盤後傾を維持した股関節引き込み）",
+                desc: "腰を反らさず平らに保ったまま、お尻をかかとに向かって後ろに引き、股関節だけで折りたたむ感覚をインプットします。"
+              }
+            ],
+            point: "【日常の意識】「良い姿勢をしよう」として胸を張って反るのをやめ、みぞおちを少しリラックスさせて肋骨を下げる意識を持ちましょう。"
+          };
+        } else if (scoreB >= scoreA && scoreB >= scoreC) {
+          resultData = {
+            typePill: "TYPE B : FLEXION & COLLAPSE",
+            pillBg: "#e0f2fe",
+            pillColor: "#0369a1",
+            name: "屈曲・腹圧抜けタイプ（骨盤後傾・猫背崩壊）",
+            lead: "お腹の360度の内圧が抜け、骨盤が後ろに倒れて背骨全体が丸まった状態で固まっています。",
+            mechanism: "座りっぱなしなどで腹圧（IAP）が完全にオフになり、骨盤が後傾して腰椎の自然な前湾が失われています。骨盤が倒れると頭部が前方へ突き出るため、頚椎と肩甲骨周りの筋肉が常にゴムのように引き伸ばされながら引っ張り続ける状態（伸張性ストレス）になり、凝りや鈍痛が生じています。",
+            flowSteps: [
+              {
+                num: "1",
+                name: "360度シリンダー呼吸（腹臥位・うつ伏せ）",
+                desc: "うつ伏せになり、おでこを手の上に乗せます。息を吸う時、お腹の前だけでなく腰の後ろや脇腹が床と天井へ膨らむ圧を感じます。"
+              },
+              {
+                num: "2",
+                name: "仰向け90-90（生後3ヶ月の股関節・体幹連結）",
+                desc: "仰向けで両膝と股関節を90度に持ち上げ、腰の隙間を床で軽く埋めたまま呼吸を繰り返します。お腹の奥深くに圧をキープします。"
+              },
+              {
+                num: "3",
+                name: "ベアシット ➔ ヒップヒンジ連動",
+                desc: "床にお尻をつけて足裏を床に置き、背骨を長く保ちながら坐骨でまっすぐ立つ練習。骨盤を立てる筋肉を再起動します。"
+              }
+            ],
+            point: "【日常の意識】背もたれに寄りかかって浅く座るのをやめ、左右の「坐骨（お尻の硬い骨）」の上にまっすぐ上半身を乗せる意識を持ちましょう。"
+          };
+        } else {
+          resultData = {
+            typePill: "TYPE C : EXTREMITY DOMINANT",
+            pillBg: "#ecfdf5",
+            pillColor: "#047857",
+            name: "四肢主導・体幹ロックタイプ（局所代償）",
+            lead: "体幹と四肢（手足）の連動が途切れており、手首・肩関節・膝など末端の関節だけで動きを代償しています。",
+            mechanism: "本来は「体幹の腹圧が安定 ➔ その支点を使って手足が自由に動く」という順序で人間は動きますが、体幹の安定性が欠けているため、手足を動かすたびに首や肩を固めて安定を作ろうとしています。手や足の動きに対して体幹がローテーション（回旋）して協調できていません。",
+            flowSteps: [
+              {
+                num: "1",
+                name: "背臥位からの寝返りローリング（生後4〜5ヶ月）",
+                desc: "腕や首の力で無理やり回るのではなく、視線とコア（体幹）から始動してゴロンと横向き・うつ伏せへ転がる連動を再現します。"
+              },
+              {
+                num: "2",
+                name: "対角線ハイハイパターン（生後7〜8ヶ月の協調）",
+                desc: "四つん這いで「右手と左膝」「左手と右膝」を同時に少しずつ前に進める練習。対角線の筋膜連鎖（スパイラルライン）を呼び覚まします。"
+              },
+              {
+                num: "3",
+                name: "ハーフニーリング（片膝立ちでの体幹安定）",
+                desc: "片膝立ちになり、骨盤を正面に向けたまま上半身を回旋させます。左右の非対称な負荷に対してコアを安定させる訓練です。"
+              }
+            ],
+            point: "【日常の意識】物を持ち上げたり作業するとき、手先だけで操作しようとせず、足裏と下腹部を意識して「身体全体で運ぶ」感覚を意識しましょう。"
+          };
+        }
+
+        const resPill = document.getElementById("resPill");
+        const resName = document.getElementById("resName");
+        const resLead = document.getElementById("resLead");
+        const resMechanism = document.getElementById("resMechanism");
+        const resFlowSteps = document.getElementById("resFlowSteps");
+        const resPoint = document.getElementById("resPoint");
+
+        if (resPill) {
+          resPill.textContent = resultData.typePill;
+          resPill.style.backgroundColor = resultData.pillBg;
+          resPill.style.color = resultData.pillColor;
+        }
+        if (resName) resName.textContent = resultData.name;
+        if (resLead) resLead.textContent = resultData.lead;
+        if (resMechanism) resMechanism.textContent = resultData.mechanism;
+
+        if (resFlowSteps) {
+          resFlowSteps.innerHTML = "";
+          resultData.flowSteps.forEach(function(item) {
+            const card = document.createElement("div");
+            card.className = "flow-card";
+            card.innerHTML = `
+              <div class="flow-header">
+                <span class="flow-number">${item.num}</span>
+                <span class="flow-name">${item.name}</span>
+              </div>
+              <div class="flow-desc">${item.desc}</div>
+            `;
+            resFlowSteps.appendChild(card);
+          });
+        }
+
+        if (resPoint) resPoint.textContent = resultData.point;
+      }
+
+      // 初回表示
+      renderStep();
+    });
+  </script>
+</body>
+</html>
