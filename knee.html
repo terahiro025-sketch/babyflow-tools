@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>膝痛機能不全セルフチェックシート | 身体運動学アセスメント</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Noto Sans JP -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', 'Noto Sans JP', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .custom-checkbox {
+      appearance: none;
+      width: 1.25rem;
+      height: 1.25rem;
+      border: 2px solid #94a3b8;
+      border-radius: 0.375rem;
+      outline: none;
+      transition: all 0.15s ease-in-out;
+      cursor: pointer;
+      display: inline-grid;
+      place-content: center;
+    }
+    .custom-checkbox:checked {
+      background-color: #0f172a;
+      border-color: #0f172a;
+    }
+    .custom-checkbox:checked::before {
+      content: "";
+      width: 0.65rem;
+      height: 0.65rem;
+      clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+      transform: scale(1);
+      background-color: white;
+    }
+    .redflag-checkbox:checked {
+      background-color: #dc2626;
+      border-color: #dc2626;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+
+  <div class="max-w-3xl mx-auto space-y-8">
+    
+    <!-- ヘッダー -->
+    <header class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold tracking-wide mb-3">
+        <span class="w-2 h-2 rounded-full bg-slate-500"></span>
+        Somatic &amp; Developmental Kinesiology
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+        膝痛機能不全セルフチェックシート
+      </h1>
+      <p class="mt-2 text-sm sm:text-base text-slate-600 leading-relaxed">
+        変形した骨そのものに執着せず、<strong class="text-slate-900 font-bold">「どこに過剰な重力とねじれが集中しているのか」</strong>というアライメントの力学的エラーを炙り出す自己診断ツールです。
+      </p>
+    </header>
+
+    <!-- STEP 0: 整形外科受診アラート（レッドフラッグ） -->
+    <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-rose-200">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-rose-600 text-white font-bold text-sm">
+          !
+        </span>
+        <h2 class="text-lg sm:text-xl font-bold text-slate-900">
+          STEP 0：整形外科受診アラート（除外基準の確認）
+        </h2>
+      </div>
+      <p class="text-xs sm:text-sm text-slate-600 mb-5 leading-relaxed">
+        運動指導やセルフケアは、器質的破壊のない機能不全が対象です。以下の項目に<strong class="text-rose-700">1つでも</strong>当てはまる場合は、直ちに専門医（整形外科）を受診してください。
+      </p>
+
+      <div class="space-y-3" id="red-flags-container">
+        <label class="flex items-start gap-3 p-3.5 rounded-xl border border-rose-100 bg-rose-50/40 hover:bg-rose-50/70 transition cursor-pointer">
+          <input type="checkbox" class="custom-checkbox redflag-checkbox mt-0.5" data-redflag>
+          <span class="text-sm font-medium text-slate-800">転倒、衝突、強くひねるなどの明らかな外傷（ケガ）の直後から痛む</span>
+        </label>
+        <label class="flex items-start gap-3 p-3.5 rounded-xl border border-rose-100 bg-rose-50/40 hover:bg-rose-50/70 transition cursor-pointer">
+          <input type="checkbox" class="custom-checkbox redflag-checkbox mt-0.5" data-redflag>
+          <span class="text-sm font-medium text-slate-800">膝に明らかな熱感があり、パンパンに腫れている、または水が溜まっている</span>
+        </label>
+        <label class="flex items-start gap-3 p-3.5 rounded-xl border border-rose-100 bg-rose-50/40 hover:bg-rose-50/70 transition cursor-pointer">
+          <input type="checkbox" class="custom-checkbox redflag-checkbox mt-0.5" data-redflag>
+          <span class="text-sm font-medium text-slate-800">安静時や夜間寝ている時でも、ズキズキと激しく痛んで眠れない</span>
+        </label>
+        <label class="flex items-start gap-3 p-3.5 rounded-xl border border-rose-100 bg-rose-50/40 hover:bg-rose-50/70 transition cursor-pointer">
+          <input type="checkbox" class="custom-checkbox redflag-checkbox mt-0.5" data-redflag>
+          <span class="text-sm font-medium text-slate-800">膝が途中でカクッと引っかかり、完全に伸びない・曲がらない（ロッキング現象）</span>
+        </label>
+        <label class="flex items-start gap-3 p-3.5 rounded-xl border border-rose-100 bg-rose-50/40 hover:bg-rose-50/70 transition cursor-pointer">
+          <input type="checkbox" class="custom-checkbox redflag-checkbox mt-0.5" data-redflag>
+          <span class="text-sm font-medium text-slate-800">歩行時や踏み込み時に、膝の力がガクッと抜けて崩れる（膝くずれ）</span>
+        </label>
+      </div>
+
+      <!-- レッドフラッグ警告バナー（チェック時に表示） -->
+      <div id="red-flag-warning" class="hidden mt-6 p-4 rounded-xl bg-rose-600 text-white shadow-lg space-y-2">
+        <div class="flex items-center gap-2 font-bold text-base">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+          整形外科での精密検査を強く推奨します
+        </div>
+        <p class="text-xs sm:text-sm text-rose-100 leading-relaxed">
+          半月板損傷、靭帯断裂、細菌感染、骨折などの急性・器質的障害の疑いがあります。自己流のストレッチや運動を中止し、速やかに医師の診断・レントゲン・MRI検査を受けてください。
+        </p>
+      </div>
+    </section>
+
+    <!-- STEP 1: 機能不全判定チェックリスト -->
+    <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80 space-y-8">
+      <div>
+        <div class="flex items-center gap-3 mb-2">
+          <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-slate-900 text-white font-bold text-sm">
+            1
+          </span>
+          <h2 class="text-lg sm:text-xl font-bold text-slate-900">
+            STEP 1：身体のねじれ・エラー傾向チェック
+          </h2>
+        </div>
+        <p class="text-xs sm:text-sm text-slate-600">
+          普段の感覚や当てはまる項目にすべてチェックを入れてください。
+        </p>
+      </div>
+
+      <!-- タイプA -->
+      <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/50 space-y-3">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+          <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Group 01</span>
+          <span class="text-xs font-medium px-2 py-0.5 rounded bg-slate-200 text-slate-700">外側・すねロック</span>
+        </div>
+        <div class="space-y-2.5">
+          <label class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-white transition cursor-pointer">
+            <input type="checkbox" class="custom-checkbox mt-0.5" data-type="A">
+            <span class="text-sm text-slate-700">膝のお皿の外側、または「膝の外下の骨（腓骨頭）」周辺が痛む</span>
+          </label>
+          <label class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-white transition cursor-pointer">
+            <input type="checkbox" class="custom-checkbox mt-0.5" data-type="A">
+            <span class="text-sm text-slate-700">もも裏の外側から膝裏の外側にかけて、スジがピーンと張って硬い</span>
+          </label>
+          <label class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-white transition cursor-pointer">
+            <input type="checkbox" class="custom-checkbox mt-0.5" data-type="A">
+            <span class="text-sm text-slate-700">椅子に座って足を脱力すると、太ももに対してつま先だけが外側を向く</span>
+          </label>
+          <label class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-white transition cursor-pointer">
+            <input type="checkbox" class="custom-checkbox mt-0.5" data-type="A">
+            <span class="text-sm text-slate-700">正座ができない、または深くしゃがむと足首の前やすねの外側が詰まる</span>
+          </label>
+          <label class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-white transition cursor-pointer">
+            <input type="checkbox" class="custom-checkbox mt-0.5" data-type="A">
+            <span class="text-sm text-slate-700">普段履いている靴の「かかとの外側」が異常にすり減る</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- タイプB -->
+      <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/50 space-y-3">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+          <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Group 02</span>
+          <span class="text-xs font-medium px-2 py-0.5 rounded bg-slate-200 text-slate-700">内側・足裏底抜け</span>
+        </div>
+        <div class="space-y-2.5">
+          <label class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-white transition cursor-pointer">
+            <input type="checkbox" class="custom-checkbox mt-0.5" data-type="B">
+            <span class="text-sm text-slate-700">膝の内側（お皿の内下あたり：鵞足部）がチクチク・ズキズキ痛む</span>
+          </label>
+          <label class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-white transition cursor-pointer">
+            <input type="checkbox" class="custom-checkbox mt-0.5" data-type="B">
+            <span class="text-sm text-slate-700">階段を「降りる」とき、または立ち上がり動作で膝の内側に重力が直撃する</span>
+          </label>
+          <label class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-white transition cursor-pointer">
+            <input type="checkbox" class="custom-checkbox mt-0.5" data-type="B">
+            <span class="text-sm text-slate-700">鏡で見ると、土踏まずが潰れて足首が内側に倒れ込んでいる（扁平足・回内足）</span>
+          </label>
+          <label class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-white transition cursor-pointer">
+            <input type="checkbox" class="custom-checkbox mt-0.5" data-type="B">
+            <span class="text-sm text-slate-700">スクワットや階段昇降で、つま先の向きよりも膝が内側に入る（ニーイン）</span>
+          </label>
+          <label class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-white transition cursor-pointer">
+            <input type="checkbox" class="custom-checkbox mt-0.5" data-type="B">
+            <span class="text-sm text-slate-700">内ももやふくらはぎの内側をマッサージすると痛みが強い</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- タイプC -->
+      <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/50 space-y-3">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+          <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Group 03</span>
+          <span class="text-xs font-medium px-2 py-0.5 rounded bg-slate-200 text-slate-700">前側・反り腰ブレーキ</span>
+        </div>
+        <div class="space-y-2.5">
+          <label class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-white transition cursor-pointer">
+            <input type="checkbox" class="custom-checkbox mt-0.5" data-type="C">
+            <span class="text-sm text-slate-700">膝のお皿の「すぐ上」や「太ももの前側全体」が常にパンパンに張って痛い</span>
+          </label>
+          <label class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-white transition cursor-pointer">
+            <input type="checkbox" class="custom-checkbox mt-0.5" data-type="C">
+            <span class="text-sm text-slate-700">立っている時、無意識に膝をピーンと後ろに押し込んで突っ張っている（反張膝）</span>
+          </label>
+          <label class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-white transition cursor-pointer">
+            <input type="checkbox" class="custom-checkbox mt-0.5" data-type="C">
+            <span class="text-sm text-slate-700">仰向けで寝ると腰の下に手がすっぽり入る（反り腰・腰椎過前弯）</span>
+          </label>
+          <label class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-white transition cursor-pointer">
+            <input type="checkbox" class="custom-checkbox mt-0.5" data-type="C">
+            <span class="text-sm text-slate-700">歩くとき、お尻ではなく太もも前側の力だけで脚を前に運んでいる感覚がある</span>
+          </label>
+          <label class="flex items-start gap-3 p-2.5 rounded-lg hover:bg-white transition cursor-pointer">
+            <input type="checkbox" class="custom-checkbox mt-0.5" data-type="C">
+            <span class="text-sm text-slate-700">長時間の立ち仕事で、膝と一緒に腰や背中がバキバキに固まる</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- 判定アクションボタン -->
+      <div class="pt-4 flex flex-col sm:flex-row gap-3">
+        <button id="diagnose-btn" class="w-full sm:flex-1 py-3.5 px-6 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm sm:text-base tracking-wide transition shadow-sm active:scale-[0.99]">
+          判定結果とリセット処方を見る
+        </button>
+        <button id="reset-btn" class="py-3.5 px-5 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-600 font-semibold text-sm transition">
+          リセット
+        </button>
+      </div>
+    </section>
+
+    <!-- 結果表示エリア -->
+    <section id="result-section" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
+        
+        <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+          <div>
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Assessment Result</span>
+            <h3 id="result-title" class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5"></h3>
+          </div>
+          <div id="result-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700"></div>
+        </div>
+
+        <!-- スコアバー -->
+        <div class="grid grid-cols-3 gap-2 sm:gap-4 mb-6 text-center">
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
+            <div class="text-xs text-slate-500 font-medium">雑巾絞り・外旋</div>
+            <div id="score-a" class="text-lg font-bold text-slate-900 mt-0.5">0 / 5</div>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
+            <div class="text-xs text-slate-500 font-medium">距骨沈下・内側</div>
+            <div id="score-b" class="text-lg font-bold text-slate-900 mt-0.5">0 / 5</div>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
+            <div class="text-xs text-slate-500 font-medium">反り腰代償・前側</div>
+            <div id="score-c" class="text-lg font-bold text-slate-900 mt-0.5">0 / 5</div>
+          </div>
+        </div>
+
+        <!-- 構造的メカニズム -->
+        <div class="mb-6 space-y-2">
+          <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <svg class="w-4 h-4 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            構造メカニズム（なぜ痛むのか）
+          </h4>
+          <p id="result-mechanism" class="text-sm text-slate-600 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-100"></p>
+        </div>
+
+        <!-- 処方メソッド（1アクション） -->
+        <div class="mb-6 space-y-3">
+          <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            最優先の1アクション処方箋
+          </h4>
+          <div class="border border-emerald-200 bg-emerald-50/40 rounded-xl p-5 space-y-3">
+            <div id="result-exercise-name" class="font-bold text-base sm:text-lg text-emerald-950"></div>
+            <div id="result-exercise-intent" class="text-xs sm:text-sm text-emerald-800"></div>
+            <ul id="result-exercise-points" class="text-xs sm:text-sm text-slate-700 space-y-1.5 list-disc list-inside"></ul>
+          </div>
+        </div>
+
+        <!-- 陥りやすい罠と禁止事項 -->
+        <div class="space-y-2">
+          <h4 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            ありがちなNG動作・注意点
+          </h4>
+          <p id="result-trap" class="text-xs sm:text-sm text-amber-900 bg-amber-50/70 p-3.5 rounded-xl border border-amber-200/80 leading-relaxed"></p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- フッター免責事項 -->
+    <footer class="text-center text-xs text-slate-400 space-y-2 pb-8">
+      <p>※本ツールは運動発達学・キネシオロジーに基づいた教育・自己評価ツールであり、医師による診断や医療行為に代わるものではありません。</p>
+      <p>激しい痛みや異常を感じる場合は、直ちに行動を中止し医師の指導に従ってください。</p>
+    </footer>
+
+  </div>
+
+  <script>
+    // 診断データの定義
+    const DIAGNOSTIC_DATA = {
+      A: {
+        title: "タイプA：雑巾絞り・下腿外旋タイプ",
+        badge: "外側腓骨ロック",
+        mechanism: "骨盤の前傾や股関節の内巻きに対し、足先だけを無理に正面に向けようとして、膝下（腓骨）が外側・後方へ引き上げられて固着（ロック）しています。膝関節が雑巾のように絞られた状態となり、膝外側の腓骨頭周辺や腸脛靭帯、大腿二頭筋停止部に強烈な牽引摩擦が集中しています。",
+        exerciseName: "【処方】：ヒップヒンジ（股関節の引き込み ＋ もも裏外側の脱力）",
+        intent: "目的：腓骨を上から引っ張り上げている大腿二頭筋のテンションを抜き、大腿骨を骨盤のソケットへはめ直す。",
+        points: [
+          "膝を曲げるのではなく、股関節のシワにお尻を後ろへ引く感覚で行う。",
+          "お尻の奥（大臀筋）にテンションが乗ることで、すね外側のパンパンな張りがフッと抜けるのを確認する。",
+          "動作中、つま先と膝のお皿が同じ方向を向いている状態を保つ。"
+        ],
+        trap: "膝を前に突き出してスクワットのように曲げないこと。膝を曲げると腓骨のロックがさらに強まり、膝前面や外側に負荷が直撃します。"
+      },
+      B: {
+        title: "タイプB：距骨沈下・内側トルク集中タイプ",
+        badge: "足裏底抜け・距骨落下",
+        mechanism: "足裏のアーチ機能（ウィンドラス機構）が低下し、ベアリングである距骨が内側へ滑り落ちています。足元のサスペンションが底抜けしているため、歩行や階段の着地のたびに膝が内側へ倒れ込み（ニーイン）、膝の内側（鵞足部や内側側副靭帯）に引きちぎられるような過剰トルクが直撃しています。",
+        exerciseName: "【処方】：ボール挟み・かかと1ミリ浮かし",
+        intent: "目的：小指側への荷重逃げを物理的にブロックし、親指の付け根（母指球）で床を踏んで落ちた距骨を押し上げる。",
+        points: [
+          "内くるぶしのすぐ下・かかとの間にテニスボール等を挟む。",
+          "かかとを「紙が1枚入る程度（1ミリ）」だけ床から浮かせる。",
+          "ふくらはぎ表面で踏ん張らず、足裏の土踏まずがギューッと巻き上がる感覚を維持する。"
+        ],
+        trap: "高くつま先立ちしないこと。高く上げすぎるとふくらはぎのアウターマッスルが力み、足首の内倒れが余計に悪化します。あくまで『1ミリ』が急所です。"
+      },
+      C: {
+        title: "タイプC：仙骨フリーズ・反り腰代償タイプ",
+        badge: "腰椎ロック・前ももブレーキ",
+        mechanism: "骨盤ニュートラル（仙骨の水平）が消失し、腹圧とお尻の筋肉が冬眠しています。身体が倒れないように太もも前側（大腿四頭筋）をつっかえ棒のように使い倒しているため、お皿（膝蓋骨）を上方に引っ張り上げる過大な張力がかかり続け、膝のすぐ上や前面に痛みが生じています。",
+        exerciseName: "【処方】：フロー1（仰向け仙骨水平・股関節分離ドリル）",
+        intent: "目的：腰椎の代償をシャットアウトし、太もも前側の力みを抜いてインナーの腹圧と股関節の独立運動を再起動する。",
+        points: [
+          "仰向けになり、仙骨を床にペタッと水平につける（腰の下に隙間を作らない）。",
+          "反り腰にならない骨盤位置をキープしたまま、足の付け根（股関節ソケット）から脚を小さくパタパタ動かす。",
+          "太ももの前側ではなく、下腹部（腹圧のシリンダー）で脚の重さを吊り上げる。"
+        ],
+        trap: "脚を動かすときに腰が反って床から浮いてしまうと完全に無意味です。仙骨が浮きそうになったら動かす幅を小さくしてください。"
+      },
+      MIXED: {
+        title: "タイプMIX：複合ねじれ・全身代償タイプ",
+        badge: "足元＋骨盤の複合エラー",
+        mechanism: "足元の距骨沈下と、骨盤・股関節のねじれが同時に発生しています。土台（足首）が内側に崩れ、その反動ですねが外にねじれ、さらに腰を反らせてバランスをとるという『典型的な多重代償パターン』です。",
+        exerciseName: "【処方】：ボール挟みかかと1ミリ浮かし ➔ ヒップヒンジの順次リセット",
+        intent: "目的：まず足元のベアリング（距骨）を安定させてから、股関節の引き込みを再構築する。",
+        points: [
+          "まずは『ボール挟みかかと1ミリ浮かし』で足裏のアーチを叩き起こす。",
+          "その安定した足裏のまま、お尻を引く『ヒップヒンジ』を行い、膝を使わずに股関節で受ける。",
+          "一度に激しく動かさず、1つずつの関節の力みを解く意識で行う。"
+        ],
+        trap: "内ももを鍛えようとしてクッションを力任せに挟んだり、膝を揃えようと形だけ矯正しないこと。ねじれがさらに悪化します。"
+      }
+    };
+
+    // DOM要素の取得
+    const redflags = document.querySelectorAll('[data-redflag]');
+    const redFlagWarning = document.getElementById('red-flag-warning');
+    const diagnoseBtn = document.getElementById('diagnose-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const resultSection = document.getElementById('result-section');
+
+    const scoreAEl = document.getElementById('score-a');
+    const scoreBEl = document.getElementById('score-b');
+    const scoreCEl = document.getElementById('score-c');
+
+    const resultTitleEl = document.getElementById('result-title');
+    const resultBadgeEl = document.getElementById('result-badge');
+    const resultMechanismEl = document.getElementById('result-mechanism');
+    const resultExerciseNameEl = document.getElementById('result-exercise-name');
+    const resultExerciseIntentEl = document.getElementById('result-exercise-intent');
+    const resultExercisePointsEl = document.getElementById('result-exercise-points');
+    const resultTrapEl = document.getElementById('result-trap');
+
+    // レッドフラッグの変更検知
+    redflags.forEach(cb => {
+      cb.addEventListener('change', () => {
+        const anyChecked = Array.from(redflags).some(c => c.checked);
+        if (anyChecked) {
+          redFlagWarning.classList.remove('hidden');
+        } else {
+          redFlagWarning.classList.add('hidden');
+        }
+      });
+    });
+
+    // 診断実行
+    diagnoseBtn.addEventListener('click', () => {
+      const anyRedFlag = Array.from(redflags).some(c => c.checked);
+      if (anyRedFlag) {
+        redFlagWarning.classList.remove('hidden');
+        redFlagWarning.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      const countA = document.querySelectorAll('[data-type="A"]:checked').length;
+      const countB = document.querySelectorAll('[data-type="B"]:checked').length;
+      const countC = document.querySelectorAll('[data-type="C"]:checked').length;
+
+      scoreAEl.textContent = `${countA} / 5`;
+      scoreBEl.textContent = `${countB} / 5`;
+      scoreCEl.textContent = `${countC} / 5`;
+
+      // タイプ判定ロジック
+      let selectedData = null;
+      const maxScore = Math.max(countA, countB, countC);
+
+      if (maxScore === 0) {
+        alert("いずれかの項目にチェックを入れてから判定を行ってください。");
+        return;
+      }
+
+      // 同点チェック
+      const maxTypes = [];
+      if (countA === maxScore) maxTypes.push('A');
+      if (countB === maxScore) maxTypes.push('B');
+      if (countC === maxScore) maxTypes.push('C');
+
+      if (maxTypes.length > 1) {
+        selectedData = DIAGNOSTIC_DATA.MIXED;
+      } else {
+        selectedData = DIAGNOSTIC_DATA[maxTypes[0]];
+      }
+
+      // UI反映
+      resultTitleEl.textContent = selectedData.title;
+      resultBadgeEl.textContent = selectedData.badge;
+      resultMechanismEl.textContent = selectedData.mechanism;
+      resultExerciseNameEl.textContent = selectedData.exerciseName;
+      resultExerciseIntentEl.textContent = selectedData.intent;
+
+      resultExercisePointsEl.innerHTML = '';
+      selectedData.points.forEach(pt => {
+        const li = document.createElement('li');
+        li.textContent = pt;
+        resultExercisePointsEl.appendChild(li);
+      });
+
+      resultTrapEl.textContent = selectedData.trap;
+
+      resultSection.classList.remove('hidden');
+      resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    // リセット処理
+    resetBtn.addEventListener('click', () => {
+      document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+      redFlagWarning.classList.add('hidden');
+      resultSection.classList.add('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
